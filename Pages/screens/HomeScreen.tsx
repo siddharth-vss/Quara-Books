@@ -14,34 +14,21 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 
-// const ebook_access = [
-//     "public", - local
-//     "borrowable", -user
-
-//     "printdisabled", -user (special additions)
-
-// not available
-//     "no_ebook",
-//     "unclassified",
-// ]
 
 const HomeScreen = () => {
     const [value, onChangeText] = useState('');
-    const [books, setBooks] = useState({});
-    const [loading, setLoading] = useState(false);
+    const [books, setBooks] = useState<any>({});
+    const [loading, setLoading] = useState<boolean>(false);
     const search = async () => {
         console.log('hii', value);
         setLoading(true);
         let res = await fetch(`http://openlibrary.org/search.json?q=${value.toLowerCase()}`);
-        // await Linking.openURL(`http://openlibrary.org/search.json?q=${value.toLowerCase()}`);
         console.log('hii1');
         res = await res.json();
         setBooks(res);
 
         setLoading(false);
-        // console.log(books.docs[0].title);
     };
-    // onChangeText('Hello World!');
     return (
         <View>
             <View style={[styles.flex, styles.justiarround]} >
@@ -59,34 +46,22 @@ const HomeScreen = () => {
                 </TouchableOpacity>
             </View>
             <ScrollView style={[styles.scroll]} >
-                {/* <View style={[styles.card]}>
-                    <View style={[styles.flex, styles.justiarround]} >
-                        <Text> BOOK :</Text>
-                        <Text>i.title</Text>
-                    </View>
-                    <View style={[styles.flex, styles.justiarround]} >
-                        <Text>Author :</Text>
-                        <Text>i.author_name[0]</Text>
-                    </View>
-                    <View style={[styles.aling]} >
-                        <View style={[styles.aling]}>
-                            <View style={[styles.badge]}>
-                                <Text >Users Only</Text>
-                            </View>
-                            <Image style={[styles.img]} source={{ uri: 'https://res.cloudinary.com/dabh5hsuk/image/upload/v1709550342/lkyrc8jurisjabcfrkld.jpg' }} />
-                        </View>
-                        <TouchableOpacity style={[styles.btn, { width: 200 }]} onPress={() => { Linking.openURL('https://openlibrary.org'); }}>
-                            <Text style={[styles.txt]} >Read Book Now</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View> */}
                 {loading === true && <ActivityIndicator size="large" color="#C67C4E" />}
-                {/* <Text style={[styles.txt,{color : 'black'}]} >{value}</Text> */}
+
                 {(books?.docs?.length > 0 && loading === false) &&
                     books.docs
-                        .map((i) => (
-                            // i.ebook_access === 'public' &&
-                            <View style={[styles.card]}>
+                        .map((i :{
+                            title : string,
+                            author_name : string,
+                            ebook_access : string,
+                            isbn?:string,
+                            key?:string,
+                            image_url?:string,
+                            description?:string,
+                            language?:string,
+                            num_pages?:string,
+                        },index : number) => (
+                            <View key={index} style={[styles.card]}>
                                 <View style={[styles.flex, styles.justiarround]} >
                                     <Text> BOOK :</Text>
                                     <Text>{i.title}</Text>
@@ -111,8 +86,8 @@ const HomeScreen = () => {
     );
 };
 
-function Status_Checker(ebook_access) {
-    console.log(ebook_access.ebook_access);
+function Status_Checker(ebook_access : {ebook_access : string}) {
+
     if (ebook_access.ebook_access === 'public') {
         return (<View style={[
             styles.badge, { backgroundColor: '#A42CD6' },
