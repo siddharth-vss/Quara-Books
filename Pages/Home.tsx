@@ -3,7 +3,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Audio, BookMark, HomeScreen, ProfileScreen, TopCharts } from './screens';
+import {  BookMark, HomeScreen, ProfileScreen } from './screens';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Text } from 'react-native';
 // import { useNavigation, DrawerActions } from '@react-navigation/native';
